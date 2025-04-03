@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ Harry Potter Disk Scheduling ⚡</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🔮 Disk Scheduling - Hogwarts Edition</h1>
+
+        <label for="algorithm">Choose Algorithm:</label>
+        <select id="algorithm">
+            <option value="FCFS">FCFS</option>
+            <option value="SSTF">SSTF</option>
+            <option value="SCAN">SCAN</option>
+            <option value="CSCAN">C-SCAN</option>
+            <option value="LOOK">LOOK</option>
+            <option value="CLOOK">C-LOOK</option>
+        </select>
+
+        <label for="head">Initial Head Position:</label>
+        <input type="number" id="head" placeholder="Enter head position">
+
+        <label for="requests">Enter Requests (comma-separated):</label>
+        <input type="text" id="requests" placeholder="e.g. 34,98,123,14">
+
+        <label for="diskSize">Disk Size:</label>
+        <input type="number" id="diskSize" placeholder="Enter disk size">
+
+        <label for="direction">Direction:</label>
+        <select id="direction">
+            <option value="right">Right</option>
+            <option value="left">Left</option>
+        </select>
+
+        <button onclick="runAlgorithm()">⚡ Cast Spell</button>
+
+        <div id="results">⚡ Results will appear here...</div>
+        <div id="avgSeekTime"></div>
+        <div id="throughput"></div>
+
+        <canvas id="seekChart"></canvas>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>
