@@ -16,7 +16,6 @@ function runAlgorithm() {
         document.getElementById("throughput").innerText = "";
         return;
     }
-
     let seekTime = 0;
     seekSequence = [];
 
@@ -40,9 +39,7 @@ function runAlgorithm() {
             seekTime = clook(head, requests);
             break;
     }
-
     updateGraph();
-
     let avgSeekTime = requests.length > 0 ? seekTime / requests.length : 0;
     let throughput = seekTime > 0 ? requests.length / seekTime : 0;
 
@@ -77,8 +74,7 @@ function updateGraph() {
         }
     });
 }
-
-
+ 
 function fcfs(head, requests) {
     let seekTime = 0;
     let prev = head;
@@ -92,4 +88,77 @@ function fcfs(head, requests) {
     return seekTime;
 }
 
+ 
+function sstf(head, requests) {
+    let seekTime = 0;
+    let current = head;
+    let remaining = [...requests];
+    seekSequence.push(head);
+    while (remaining.length > 0) {
+        let closest = remaining.reduce((prev, curr) => 
+            Math.abs(curr - current) < Math.abs(prev - current) ? curr : prev
+        );
+        seekTime += Math.abs(closest - current);
+        current = closest;
+        seekSequence.push(current);
+        remaining.splice(remaining.indexOf(closest), 1);
+    }
+    return seekTime;
+}
+function scan(head, requests, diskSize, direction) {
+    let seekTimSe = 0;
+    let left = requests.filter(r => r < head).sort((a, b) => a - b);
+    let right = requests.filter(r => r >= head).sort((a, b) => a - b);
 
+    if (direction === "left") {
+        seekSequence = [head, ...left.reverse(), 0, ...right];
+        seekTime = Math.abs(head - 0) + Math.abs(right[right.length - 1] - 0);
+    } else {
+        seekSequence = [head, ...right, diskSize - 1, ...left.reverse()];
+        seekTime = Math.abs(diskSize - 1 - head) + Math.abs(left[0] - 0);
+    }
+
+    return seekTime;
+}
+
+ 
+function cscan(head, requests, diskSize) {
+    let seekTime = 0;
+    let left = requests.filter(r => r < head).sort((a, b) => a - b);
+    let right = requests.filter(r => r >= head).sort((a, b) => a - b);
+
+    seekSequence = [head, ...right, diskSize - 1, 0, ...left];
+    seekTime = (diskSize - 1 - head) + (diskSize - 1) + left[left.length - 1];
+
+    return seekTime;
+}
+
+ 
+function look(head, requests, direction) {
+    let seekTime = 0;
+    let left = requests.filter(r => r < head).sort((a, b) => a - b);
+    let right = requests.filter(r => r >= head).sort((a, b) => a - b);
+
+    if (direction === "left") {
+        seekSequence = [head, ...left.reverse(), ...right];
+        seekTime = Math.abs(head - left[0]) + Math.abs(left[0] - right[right.length - 1]);
+    } else {
+        seekSequence = [head, ...right, ...left.reverse()];
+        seekTime = Math.abs(head - right[right.length - 1]) + Math.abs(right[right.length - 1] - left[0]);
+    }
+
+    return seekTime;
+}
+
+ 
+function clook(head, requests) {
+    let seekTime = 0;
+    let sorted = requests.sort((a, b) => a - b);
+    let right = sorted.filter(r => r >= head);
+    let left = sorted.filter(r => r < head);
+
+    seekSequence = [head, ...right, ...left];
+    seekTime = Math.abs(head - right[right.length - 1]) + Math.abs(right[right.length - 1] - left[0]);
+
+    return seekTime;
+}
