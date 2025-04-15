@@ -1,0 +1,188 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+#include <climits>
+#include <iomanip> // for formatting output
+
+using namespace std;
+
+struct Result {
+    string name;
+    int total_seek_time;
+    double avg_seek_time;
+    double throughput;
+};
+
+int fcfs(int head, vector<int> requests) {
+    int seek_time = 0;
+    for (int req : requests) {
+        seek_time += abs(head - req);
+        head = req;
+    }
+    return seek_time;
+}
+
+int sstf(int head, vector<int> requests) {
+    int seek_time = 0;
+    vector<bool> visited(requests.size(), false);
+
+    for (size_t i = 0; i < requests.size(); i++) {
+        int minDist = INT_MAX, index = -1;
+        for (size_t j = 0; j < requests.size(); j++) {
+            if (!visited[j]) {
+                int dist = abs(head - requests[j]);
+                if (dist < minDist) {
+                    minDist = dist;
+                    index = j;
+                }
+            }
+        }
+        seek_time += minDist;
+        head = requests[index];
+        visited[index] = true;
+    }
+    return seek_time;
+}
+
+int scan(int head, vector<int> requests, int disk_size, bool moveRight) {
+    requests.push_back(0);
+    requests.push_back(disk_size - 1);
+    sort(requests.begin(), requests.end());
+
+    int seek_time = 0, index = 0;
+    while (index < requests.size() && requests[index] < head) index++;
+
+    int start = (moveRight) ? index : index - 1;
+    int dir = (moveRight) ? 1 : -1;
+
+    for (int i = start; i >= 0 && i < requests.size(); i += dir) {
+        seek_time += abs(head - requests[i]);
+        head = requests[i];
+    }
+
+    return seek_time;
+}
+
+int cscan(int head, vector<int> requests, int disk_size) {
+    requests.push_back(0);
+    requests.push_back(disk_size - 1);
+    sort(requests.begin(), requests.end());
+
+    int seek_time = 0, index = 0;
+    while (index < requests.size() && requests[index] < head) index++;
+
+    for (int i = index; i < requests.size(); i++) {
+        seek_time += abs(head - requests[i]);
+        head = requests[i];
+    }
+
+    seek_time += abs(head - 0);
+    head = 0;
+
+    for (int i = 0; i < index; i++) {
+        seek_time += abs(head - requests[i]);
+        head = requests[i];
+    }
+
+    return seek_time;
+}
+
+int look(int head, vector<int> requests, bool moveRight) {
+    sort(requests.begin(), requests.end());
+
+    int seek_time = 0, index = 0;
+    while (index < requests.size() && requests[index] < head) index++;
+
+    int start = (moveRight) ? index : index - 1;
+    int dir = (moveRight) ? 1 : -1;
+
+    for (int i = start; i >= 0 && i < requests.size(); i += dir) {
+        seek_time += abs(head - requests[i]);
+        head = requests[i];
+    }
+
+    return seek_time;
+}
+
+int clook(int head, vector<int> requests) {
+    sort(requests.begin(), requests.end());
+
+    int seek_time = 0, index = 0;
+    while (index < requests.size() && requests[index] < head) index++;
+
+    for (int i = index; i < requests.size(); i++) {
+        seek_time += abs(head - requests[i]);
+        head = requests[i];
+    }
+
+    for (int i = 0; i < index; i++) {
+        seek_time += abs(head - requests[i]);
+        head = requests[i];
+    }
+
+    return seek_time;
+}
+
+void display_results(vector<Result> results, int num_requests) {
+    cout << "\n--- Disk Scheduling Results ---\n";
+    cout << left << setw(12) << "Algorithm" 
+         << setw(18) << "Total Seek Time"
+         << setw(20) << "Average Seek Time"
+         << setw(20) << "Throughput (req/unit)" << endl;
+
+    cout << string(70, '-') << endl;
+
+    for (const auto& r : results) {
+        cout << left << setw(12) << r.name 
+             << setw(18) << r.total_seek_time 
+             << setw(20) << fixed << setprecision(2) << r.avg_seek_time
+             << setw(20) << fixed << setprecision(2) << r.throughput
+             << endl;
+    }
+}
+
+int main() {
+    int head, num_requests, disk_size;
+    bool moveRight;
+
+    cout << "Enter number of disk requests: ";
+    cin >> num_requests;
+
+    vector<int> requests(num_requests);
+    cout << "Enter the requests:\n";
+    for (int i = 0; i < num_requests; i++) cin >> requests[i];
+
+    cout << "Enter initial head position: ";
+    cin >> head;
+
+    cout << "Enter disk size: ";
+    cin >> disk_size;
+
+    cout << "Enter direction (1 = Right, 0 = Left): ";
+    cin >> moveRight;
+
+    vector<Result> results;
+
+    int t_fcfs = fcfs(head, requests);
+    results.push_back({"FCFS", t_fcfs, (double)t_fcfs / num_requests, (double)num_requests / t_fcfs});
+
+    int t_sstf = sstf(head, requests);
+    results.push_back({"SSTF", t_sstf, (double)t_sstf / num_requests, (double)num_requests / t_sstf});
+
+    int t_scan = scan(head, requests, disk_size, moveRight);
+    results.push_back({"SCAN", t_scan, (double)t_scan / num_requests, (double)num_requests / t_scan});
+
+    int t_cscan = cscan(head, requests, disk_size);
+    results.push_back({"C-SCAN", t_cscan, (double)t_cscan / num_requests, (double)num_requests / t_cscan});
+
+    int t_look = look(head, requests, moveRight);
+    results.push_back({"LOOK", t_look, (double)t_look / num_requests, (double)num_requests / t_look});
+
+    int t_clook = clook(head, requests);
+    results.push_back({"C-LOOK", t_clook, (double)t_clook / num_requests, (double)num_requests / t_clook});
+
+    display_results(results, num_requests);
+
+    return 0;
+}
