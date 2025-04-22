@@ -2,6 +2,7 @@
 The Advanced Disk Scheduling Simulator is a comprehensive tool designed to demonstrate how various disk scheduling algorithms operate and impact system performance. It simulates the movement of a disk’s read/write head as it processes a queue of I/O requests, providing both visual and numerical insights. Algorithms such as FCFS, SSTF, SCAN, C-SCAN, LOOK, and C-LOOK are implemented to show how each method handles seek time, direction, and efficiency differently. This simulator is particularly useful for students, educators, and OS enthusiasts seeking to understand disk management concepts in a more interactive and practical way. By analyzing total head movements and seek sequences, users can clearly compare the effectiveness of each scheduling strategy under different scenarios.
 Disk scheduling determines the order in which I/O requests are processed in the queue. Efficient scheduling can significantly reduce the total head movement and improve system responsiveness.
     Interactive and graphical simulation of disk arm movements.
+    
  Supports multiple algorithms:
 
 FCFS (First Come First Serve)
