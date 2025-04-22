@@ -21,3 +21,5 @@ USE CASES:
 Educational demonstrations of how disk scheduling works.
 Performance comparison between algorithms.
 A useful tool for operating system labs or coursework.
+
+This simulator supports multiple popular disk scheduling algorithms, allowing users to input custom request sequences and initial head positions. The simulation then visualizes the arm movement and computes metrics like total head movement and average seek time.
