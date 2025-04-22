@@ -17,4 +17,7 @@ Disk size (optional)
 Real-time comparison of total and average head movement.
 Clear visualization of seek paths and request servicing.
 
-
+USE CASES:
+Educational demonstrations of how disk scheduling works.
+Performance comparison between algorithms.
+A useful tool for operating system labs or coursework.
