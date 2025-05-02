@@ -23,3 +23,44 @@ Performance comparison between algorithms.
 A useful tool for operating system labs or coursework.
 
 This simulator supports multiple popular disk scheduling algorithms, allowing users to input custom request sequences and initial head positions. The simulation then visualizes the arm movement and computes metrics like total head movement and average seek time.
+
+
+
+Advanced Disk Scheduling Simulator - Hogwarts Edition
+
+Welcome to the **Advanced Disk Scheduling Simulator**, a magical fusion of Computer Science and Hogwarts! This simulator is designed to help users understand and visualize how different disk scheduling algorithms work, using a **Harry Potter-themed interface** for a more engaging experience.
+
+-Features
+
+-  Built-in support for the following disk scheduling algorithms:
+  - FCFS (First Come First Serve)
+  - SSTF (Shortest Seek Time First)
+  - SCAN (Elevator)
+  - LOOK
+  - C-SCAN (Circular SCAN)
+  - C-LOOK
+-  Clean and educational interface tailored for students and educators
+-  **Hogwarts Edition Theme** – Stylish UI inspired by the wizarding world
+-  C++ Backend for accurate and fast algorithm simulation
+-  Interactive Web Interface using **HTML, CSS, and JavaScript**
+
+- Project Structure
+advanced-disk-scheduler/
+│
+├── backend/
+│ ├── fcfs.cpp
+│ ├── sstf.cpp
+│ ├── scan.cpp
+│ ├── look.cpp
+│ ├── cscan.cpp
+│ ├── clook.cpp
+│ └── main.cpp # Entry point (menu, I/O handling)
+│
+├── frontend
+│ ├── index.html # Hogwarts-themed UI
+│ ├── styles.css # Magical CSS styling
+│ └── scripts.js # Algorithm logic + interaction handling
+│
+├── assets/ # Optional: images, icons, audio for theme
+
+
